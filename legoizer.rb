@@ -1,5 +1,5 @@
 def exit_with_error
-  puts "Usage: ruby legoizer.rb <path-to-image> <width-in-inches>"
+  puts "Usage: ruby legoizer.rb <path-to-image> <width-in-millimeters>"
   exit 1
 end
 

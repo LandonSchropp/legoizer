@@ -1,0 +1,173 @@
+size:
+  width: 8.0
+  height: 9.6
+
+colors:
+  -
+    name: White
+    id: '1'
+    color: "#ffffff"
+  -
+    name: Brick Yellow
+    id: '5'
+    color: "#d9bb7b"
+  -
+    name: Nougat
+    id: '18'
+    color: "#d67240"
+  -
+    name: Bright Red
+    id: '21'
+    color: "#ff0000"
+  -
+    name: Bright Blue
+    id: '23'
+    color: "#0000ff"
+  -
+    name: Bright Yellow
+    id: '24'
+    color: "#ffff00"
+  -
+    name: Black
+    id: '26'
+    color: "#000000"
+  -
+    name: Dark Green
+    id: '28'
+    color: "#009900"
+  -
+    name: Bright Green
+    id: '37'
+    color: "#00cc00"
+  -
+    name: Dark Orange
+    id: '38'
+    color: "#a83d15"
+  -
+    name: Medium Blue
+    id: '102'
+    color: "#478cc6"
+  -
+    name: Bright Orange
+    id: '106'
+    color: "#ff6600"
+  -
+    name: Bright Yellowish-Green
+    id: '119'
+    color: "#95b90b"
+  -
+    name: Bright Reddish Violet
+    id: '124'
+    color: "#990066"
+  -
+    name: Sand Blue
+    id: '135'
+    color: "#5e748c"
+  -
+    name: Sand Yellow
+    id: '138'
+    color: "#8d7452"
+  -
+    name: Earth Blue
+    id: '140'
+    color: "#002541"
+  -
+    name: Earth Green
+    id: '141'
+    color: "#003300"
+  -
+    name: Sand Green
+    id: '151'
+    color: "#5f8265"
+  -
+    name: Dark Red
+    id: '154'
+    color: "#80081b"
+  -
+    name: Flame Yellowish Orange
+    id: '191'
+    color: "#f49b00"
+  -
+    name: Reddish Brown
+    id: '192'
+    color: "#5b1c0c"
+  -
+    name: Medium Stone Grey
+    id: '194'
+    color: "#9c9291"
+  -
+    name: Dark Stone Grey
+    id: '199'
+    color: "#4c5156"
+  -
+    name: Light Stone Grey
+    id: '208'
+    color: "#e4e4da"
+  -
+    name: Light Royal Blue
+    id: '212'
+    color: "#87c0ea"
+  -
+    name: Bright Purple
+    id: '221'
+    color: "#de378b"
+  -
+    name: Light Purple
+    id: '222'
+    color: "#ee9dc3"
+  -
+    name: Cool Yellow
+    id: '226'
+    color: "#ffff99"
+  -
+    name: Medium Lilac
+    id: '268'
+    color: "#2c1577"
+  -
+    name: Light Nougat
+    id: '283'
+    color: "#f5c189"
+  -
+    name: Dark Brown
+    id: '308'
+    color: "#300f06"
+  -
+    name: Medium Nougat
+    id: '312'
+    color: "#aa7d55"
+  -
+    name: Dark Azur
+    id: '321'
+    color: "#469bc3"
+  -
+    name: Medium Azur
+    id: '322'
+    color: "#68c3e2"
+  -
+    name: Aqua
+    id: '323'
+    color: "#d3f2ea"
+  -
+    name: Medium Lavender
+    id: '324'
+    color: "#a06eb9"
+  -
+    name: Lavender
+    id: '325'
+    color: "#cda4de"
+  -
+    name: White Glow
+    id: '329'
+    color: "#f5f3d7"
+  -
+    name: Spring Yellowish Green
+    id: '326'
+    color: "#e2f99a"
+  -
+    name: Olive Green
+    id: '330'
+    color: "#77774e"
+  -
+    name: Medium-Yellowish green
+    id: '331'
+    color: "#96b93b"
