@@ -4,5 +4,5 @@ building that image out of Legos.
 The script can be run as follows:
 
 ``` sh
-ruby legoizer.rb <path-to-image> <with-in-inches> <height-in-inches>
+ruby legoizer.rb <path-to-image> <width-in-inches>
 ```
