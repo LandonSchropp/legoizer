@@ -23,4 +23,8 @@ class Color
   def to_h
     { r: red, g: green, b: blue }
   end
+
+  def to_a
+    [red, green, blue]
+  end
 end

@@ -34,14 +34,14 @@ image_brick_width = (IMAGE_WIDTH / BRICK_SIZE["width"]).round
 image_brick_height = (IMAGE_WIDTH / image.width * image.height / BRICK_SIZE["height"]).round
 
 # Resize the image to the correct number of pixels and read it into a color array
-image.resize "#{ image_brick_width }x#{ image_brick_height / 2 }!"
+image.resize "#{ image_brick_width }x#{ image_brick_height }!"
 
 # Use ChunkyPNG to read the image pixel by pixel
 image.format "png"
 chunky_image = ChunkyPNG::Image.from_io(StringIO.new(image.to_blob))
 
-pixels = (0...chunky_image.height).map do |y|
-  (0...chunky_image.width).map do |x|
+pixels = (0...chunky_image.width).map do |x|
+  (0...chunky_image.height).map do |y|
 
     red = (chunky_image[x, y] & 0xff000000) >> 24
     green = (chunky_image[x, y] & 0x00ff0000) >> 16
@@ -50,3 +50,17 @@ pixels = (0...chunky_image.height).map do |y|
     Color.new(red, green, blue)
   end
 end
+
+# Draw the image
+blueprint_width = pixels.length * BRICK_SIZE["pixel_width"]
+blueprint_height = pixels.first.length * BRICK_SIZE["pixel_height"]
+blueprint = ChunkyPNG::Image.new(blueprint_width, blueprint_height, ChunkyPNG::Color::BLACK)
+
+blueprint_width.times do |x|
+  blueprint_height.times do |y|
+    color = pixels[x / BRICK_SIZE["pixel_width"]][y / BRICK_SIZE["pixel_height"]]
+    blueprint[x, y] = ChunkyPNG::Color.rgb(*color.to_a)
+  end
+end
+
+blueprint.save('lego.png', :interlace => true)
