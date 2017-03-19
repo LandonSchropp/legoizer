@@ -2,6 +2,8 @@ require "chunky_png"
 require "mini_magick"
 require "yaml"
 
+require_relative "color"
+
 def exit_with_error
   puts "Usage: ruby legoizer.rb <path-to-image> <width-in-millimeters>"
   exit 1
@@ -40,6 +42,11 @@ chunky_image = ChunkyPNG::Image.from_io(StringIO.new(image.to_blob))
 
 pixels = (0...chunky_image.height).map do |y|
   (0...chunky_image.width).map do |x|
-    "#" + chunky_image[x, y].to_s(16)[0...6]
+
+    red = (chunky_image[x, y] & 0xff000000) >> 24
+    green = (chunky_image[x, y] & 0x00ff0000) >> 16
+    blue = (chunky_image[x, y] & 0x0000ff00) >> 8
+
+    Color.new(red, green, blue)
   end
 end
