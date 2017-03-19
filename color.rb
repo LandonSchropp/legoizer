@@ -20,16 +20,21 @@ class Color
 
   alias_method :inspect, :to_s
 
-  # Returns a number representing the *visual* differnece between two colors.
-  def difference(color)
-    ColorDifference.cie2000(to_h, color.to_h)
-  end
-
   def to_h
     { r: red, g: green, b: blue }
   end
 
   def to_a
     [red, green, blue]
+  end
+
+  # Returns a number representing the *visual* differnece between two colors.
+  def difference(color)
+    ColorDifference.cie2000(to_h, color.to_h)
+  end
+
+  # Returns the closest color in the provided array of colors to this color.
+  def closest(colors)
+    colors.min_by { |color| color.difference(self) }
   end
 end
