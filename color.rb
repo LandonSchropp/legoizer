@@ -1,3 +1,5 @@
+require 'color_difference'
+
 class Color
   attr_reader :red, :green, :blue
 
@@ -12,4 +14,13 @@ class Color
   end
 
   alias_method :inspect, :to_s
+
+  # Returns a number representing the *visual* differnece between two colors.
+  def difference(color)
+    ColorDifference.cie2000(to_h, color.to_h)
+  end
+
+  def to_h
+    { r: red, g: green, b: blue }
+  end
 end
