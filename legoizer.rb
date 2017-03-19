@@ -32,13 +32,12 @@ image_brick_width = (IMAGE_WIDTH / BRICK_SIZE["width"]).round
 image_brick_height = (IMAGE_WIDTH / image.width * image.height / BRICK_SIZE["height"]).round
 
 # Resize the image to the correct number of pixels and read it into a color array
-image.resize("#{ image_brick_width }x#{ image_brick_height }")
+image.resize "#{ image_brick_width }x#{ image_brick_height / 2 }!"
 
 # Use ChunkyPNG to read the image pixel by pixel
 image.format "png"
 chunky_image = ChunkyPNG::Image.from_io(StringIO.new(image.to_blob))
 
-# Map each pixel to its closest color.
 pixels = (0...chunky_image.height).map do |y|
   (0...chunky_image.width).map do |x|
     "#" + chunky_image[x, y].to_s(16)[0...6]
