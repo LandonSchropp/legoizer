@@ -9,6 +9,11 @@ class Color
     @blue = blue
   end
 
+  def self.from_hex(hex)
+    hex = hex.gsub(/[^0-9a-f]/, "")
+    Color.new(hex[0..1].to_i(16), hex[2..3].to_i(16), hex[4..5].to_i(16))
+  end
+
   def to_s
     "##{ red.to_s(16) }#{ green.to_s(16) }#{ blue.to_s(16) }"
   end
