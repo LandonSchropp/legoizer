@@ -40,7 +40,7 @@ image_brick_width = (IMAGE_WIDTH / BRICK_SIZE["width"]).round
 image_brick_height = (IMAGE_WIDTH / image.width * image.height / BRICK_SIZE["height"]).round
 
 # Resize the image to the correct number of pixels and read it into a color array
-image.resize "#{ image_brick_width }x#{ image_brick_height }!"
+image.scale "#{ image_brick_width }x#{ image_brick_height }!"
 
 # Use ChunkyPNG to read the image pixel by pixel
 image.format "png"
