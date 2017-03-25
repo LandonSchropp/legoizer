@@ -1,17 +1,18 @@
 require 'color_difference'
 
 class Color
-  attr_reader :red, :green, :blue
+  attr_reader :red, :green, :blue, :alpha
 
-  def initialize(red, green, blue)
+  def initialize(red, green, blue, alpha)
     @red = red
     @green = green
     @blue = blue
+    @alpha = alpha
   end
 
   def self.from_hex(hex)
     hex = hex.gsub(/[^0-9a-f]/, "")
-    Color.new(hex[0..1].to_i(16), hex[2..3].to_i(16), hex[4..5].to_i(16))
+    Color.new(hex[0..1].to_i(16), hex[2..3].to_i(16), hex[4..5].to_i(16), 0xff)
   end
 
   def to_s
@@ -21,11 +22,11 @@ class Color
   alias_method :inspect, :to_s
 
   def to_h
-    { r: red, g: green, b: blue }
+    { r: red, g: green, b: blue, a: alpha }
   end
 
   def to_a
-    [red, green, blue]
+    [red, green, blue, alpha]
   end
 
   # Returns a number representing the *visual* differnece between two colors.
@@ -33,8 +34,12 @@ class Color
     ColorDifference.cie2000(to_h, color.to_h)
   end
 
-  # Returns the closest color in the provided array of colors to this color.
+  # Returns the closest color in the provided array of colors to this color. If the color is
+  # completely transprent, this function returns white
   def closest(colors)
+    return WHITE if alpha == 0
     colors.min_by { |color| color.difference(self) }
   end
+
+  WHITE = Color.from_hex("#ffffffff")
 end

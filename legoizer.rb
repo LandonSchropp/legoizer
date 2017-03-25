@@ -53,8 +53,9 @@ lego_colors = (0...chunky_image.width).map do |x|
     red = (chunky_image[x, y] & 0xff000000) >> 24
     green = (chunky_image[x, y] & 0x00ff0000) >> 16
     blue = (chunky_image[x, y] & 0x0000ff00) >> 8
+    alpha = (chunky_image[x, y] & 0x000000ff)
 
-    Color.new(red, green, blue).closest(BRICK_COLORS)
+    Color.new(red, green, blue, alpha).closest(BRICK_COLORS)
   end
 end
 
@@ -66,7 +67,7 @@ blueprint = ChunkyPNG::Image.new(blueprint_width, blueprint_height, ChunkyPNG::C
 blueprint_width.times do |x|
   blueprint_height.times do |y|
     color = lego_colors[x / BRICK_SIZE["pixel_width"]][y / BRICK_SIZE["pixel_height"]]
-    blueprint[x, y] = ChunkyPNG::Color.rgb(*color.to_a)
+    blueprint[x, y] = ChunkyPNG::Color.rgba(*color.to_a)
   end
 end
 
