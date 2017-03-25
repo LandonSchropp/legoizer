@@ -70,4 +70,12 @@ blueprint_width.times do |x|
   end
 end
 
+# Draw the outlines
+blueprint_width.times do |x|
+  blueprint_height.times do |y|
+    next unless x % BRICK_SIZE["pixel_width"] == 0 || y % BRICK_SIZE["pixel_height"] == 0
+    blueprint[x, y] = ChunkyPNG::Color::WHITE
+  end
+end
+
 blueprint.save('lego.png', :interlace => true)
