@@ -1,8 +1,8 @@
 size:
   width: 8.0
   height: 9.6
-  pixel_width: 40
-  pixel_height: 48
+  pixel_width: 10
+  pixel_height: 12
 
 colors:
   -

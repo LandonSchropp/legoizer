@@ -5,7 +5,7 @@ require "yaml"
 require_relative "color"
 
 def exit_with_error
-  puts "Usage: ruby legoizer.rb <path-to-image> <width-in-millimeters>"
+  puts "Usage: ruby legoizer.rb <path-to-image> <width-in-millimeters> <draw-outlines>"
   exit 1
 end
 
@@ -13,17 +13,27 @@ def is_float?(string)
   true if Float(string) rescue false
 end
 
+def is_boolean?(string)
+  ["true", "false"].include? string
+end
+
 # Ensure the correct number of arguments are provided, and that the arguments are valid.
-exit_with_error unless ARGV.length == 2
+exit_with_error unless ARGV.length == 3
 exit_with_error unless File.exist?(ARGV[0]) && File.file?(ARGV[0])
 exit_with_error unless is_float? ARGV[1]
+exit_with_error unless is_boolean? ARGV[2]
 
 IMAGE_PATH = ARGV[0]
 IMAGE_WIDTH = ARGV[1].to_f
+DRAW_OUTLINES = ARGV[2] == "true"
 
 # Read in the configuration data
 yaml = YAML.load(IO.read(File.join(File.dirname(__FILE__), 'lego.yml')))
-BRICK_SIZE = yaml["size"]
+
+brick_width = yaml["size"]["width"]
+brick_height = yaml["size"]["height"]
+brick_pixel_width = yaml["size"]["pixel_width"] * (DRAW_OUTLINES ? 8 : 1)
+brick_pixel_height = yaml["size"]["pixel_height"] * (DRAW_OUTLINES ? 8 : 1)
 
 # Parse the colors
 BRICK_COLOR_CONFIGURATION = yaml["colors"].map do |config|
@@ -36,8 +46,8 @@ BRICK_COLORS = BRICK_COLOR_CONFIGURATION.map { |config| config["color"] }
 image = MiniMagick::Image.open(IMAGE_PATH)
 
 # Determine the number of Legos to use
-image_brick_width = (IMAGE_WIDTH / BRICK_SIZE["width"]).round
-image_brick_height = (IMAGE_WIDTH / image.width * image.height / BRICK_SIZE["height"]).round
+image_brick_width = (IMAGE_WIDTH / brick_width).round
+image_brick_height = (IMAGE_WIDTH / image.width * image.height / brick_height).round
 
 # Resize the image to the correct number of pixels and read it into a color array
 image.scale "#{ image_brick_width }x#{ image_brick_height }!"
@@ -60,22 +70,24 @@ lego_colors = (0...chunky_image.width).map do |x|
 end
 
 # Draw the image
-blueprint_width = lego_colors.length * BRICK_SIZE["pixel_width"]
-blueprint_height = lego_colors.first.length * BRICK_SIZE["pixel_height"]
+blueprint_width = lego_colors.length * brick_pixel_width
+blueprint_height = lego_colors.first.length * brick_pixel_height
 blueprint = ChunkyPNG::Image.new(blueprint_width, blueprint_height, ChunkyPNG::Color::BLACK)
 
 blueprint_width.times do |x|
   blueprint_height.times do |y|
-    color = lego_colors[x / BRICK_SIZE["pixel_width"]][y / BRICK_SIZE["pixel_height"]]
+    color = lego_colors[x / brick_pixel_width][y / brick_pixel_height]
     blueprint[x, y] = ChunkyPNG::Color.rgba(*color.to_a)
   end
 end
 
 # Draw the outlines
-blueprint_width.times do |x|
-  blueprint_height.times do |y|
-    next unless x % BRICK_SIZE["pixel_width"] == 0 || y % BRICK_SIZE["pixel_height"] == 0
-    blueprint[x, y] = ChunkyPNG::Color::WHITE
+if DRAW_OUTLINES
+  blueprint_width.times do |x|
+    blueprint_height.times do |y|
+      next unless x % brick_pixel_width == 0 || y % brick_pixel_height == 0
+      blueprint[x, y] = ChunkyPNG::Color::WHITE
+    end
   end
 end
 
