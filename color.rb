@@ -37,9 +37,9 @@ class Color
   # Returns the closest color in the provided array of colors to this color. If the color is
   # completely transprent, this function returns white
   def closest(colors)
-    return WHITE if alpha == 0
+    return OFF_WHITE if alpha == 0
     colors.min_by { |color| color.difference(self) }
   end
 
-  WHITE = Color.from_hex("#ffffffff")
+  OFF_WHITE = Color.from_hex("#fafafaff")
 end

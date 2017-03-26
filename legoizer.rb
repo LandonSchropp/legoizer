@@ -32,8 +32,8 @@ yaml = YAML.load(IO.read(File.join(File.dirname(__FILE__), 'lego.yml')))
 
 brick_width = yaml["size"]["width"]
 brick_height = yaml["size"]["height"]
-brick_pixel_width = yaml["size"]["pixel_width"] * (DRAW_OUTLINES ? 8 : 1)
-brick_pixel_height = yaml["size"]["pixel_height"] * (DRAW_OUTLINES ? 8 : 1)
+brick_pixel_width = yaml["size"]["pixel_width"] * (DRAW_OUTLINES ? 16 : 1)
+brick_pixel_height = yaml["size"]["pixel_height"] * (DRAW_OUTLINES ? 16 : 1)
 
 # Parse the colors
 BRICK_COLOR_CONFIGURATION = yaml["colors"].map do |config|
