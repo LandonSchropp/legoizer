@@ -1,29 +1,33 @@
 require "chunky_png"
+require "yaml"
+
 require_relative "color"
 
 # An immutable representation of a grid of legos.
 class LegoBlueprint
 
+  # Lego constants
   BRICK_PIXEL_WIDTH = 10
   BRICK_PIXEL_HEIGHT = 12
+
+  # Load the Lego brick colors into a constant.
+  BRICK_COLORS = YAML.load(IO.read(File.join(File.dirname(__FILE__), 'colors.yml'))).map do |hash|
+    Color.new(**hash)
+  end
 
   attr_reader :width, :height, :colors
 
   def initialize(width, height, colors)
     @width = width
     @height = height
-    @colors = colors
+    @colors = colors.map { |row| row.map { |color| color.closest(BRICK_COLORS) } }
   end
 
-  def to_chunky_png(outline)
+  def to_chunky_png(outline: false)
     image_width = colors.length * BRICK_PIXEL_WIDTH
     image_height = colors.first.length * BRICK_PIXEL_HEIGHT
 
-    blueprint = ChunkyPNG::Image.new(
-      image_width,
-      image_height,
-      ChunkyPNG::Color::rgb(250, 250, 250)
-    )
+    blueprint = ChunkyPNG::Image.new(image_width, image_height, ChunkyPNG::Color::TRANSPARENT)
 
     image_width.times do |x|
       image_height.times do |y|

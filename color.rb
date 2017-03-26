@@ -1,25 +1,21 @@
 require 'color_difference'
 
 class Color
-  attr_reader :red, :green, :blue, :alpha
 
-  def initialize(red, green, blue, alpha)
+  attr_reader :name, :id, :red, :green, :blue, :alpha
+
+  def initialize(name: nil, id: nil, red:, green:, blue:, alpha: 0xff)
+    @name = name
+    @id = id
     @red = red
     @green = green
     @blue = blue
     @alpha = alpha
   end
 
-  def self.from_hex(hex)
-    hex = hex.gsub(/[^0-9a-f]/, "")
-    Color.new(hex[0..1].to_i(16), hex[2..3].to_i(16), hex[4..5].to_i(16), 0xff)
-  end
-
   def to_s
     "##{ to_a.map { |n| n.to_s(16).rjust(2, "0") }.join }"
   end
-
-  alias_method :inspect, :to_s
 
   def to_h
     { r: red, g: green, b: blue, a: alpha }
@@ -35,11 +31,11 @@ class Color
   end
 
   # Returns the closest color in the provided array of colors to this color. If the color is
-  # completely transprent, this function returns white
+  # completely transprent, this function instead returns the `TRANSPARENT` color.
   def closest(colors)
-    return OFF_WHITE if alpha == 0
+    return TRANSPARENT if alpha == 0
     colors.min_by { |color| color.difference(self) }
   end
 
-  OFF_WHITE = Color.from_hex("#fafafaff")
+  TRANSPARENT = Color.new(red: 0xff, green: 0xff, blue: 0xff, alpha: 0)
 end
