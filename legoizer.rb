@@ -3,6 +3,7 @@ require "mini_magick"
 require "yaml"
 
 require_relative "color"
+require_relative "lego_blueprint"
 
 def exit_with_error
   puts "Usage: ruby legoizer.rb <path-to-image> <width-in-millimeters> <draw-outlines>"
@@ -23,6 +24,9 @@ exit_with_error unless File.exist?(ARGV[0]) && File.file?(ARGV[0])
 exit_with_error unless is_float? ARGV[1]
 exit_with_error unless is_boolean? ARGV[2]
 
+BLOCK_MILLIMETER_WIDTH = 8.0
+BLOCK_MILLIMETER_HEIGHT = 9.6
+
 IMAGE_PATH = ARGV[0]
 IMAGE_WIDTH = ARGV[1].to_f
 DRAW_OUTLINES = ARGV[2] == "true"
@@ -32,8 +36,6 @@ yaml = YAML.load(IO.read(File.join(File.dirname(__FILE__), 'lego.yml')))
 
 brick_width = yaml["size"]["width"]
 brick_height = yaml["size"]["height"]
-brick_pixel_width = yaml["size"]["pixel_width"] * (DRAW_OUTLINES ? 16 : 1)
-brick_pixel_height = yaml["size"]["pixel_height"] * (DRAW_OUTLINES ? 16 : 1)
 
 # Parse the colors
 BRICK_COLOR_CONFIGURATION = yaml["colors"].map do |config|
@@ -69,26 +71,8 @@ lego_colors = (0...chunky_image.width).map do |x|
   end
 end
 
-# Draw the image
-blueprint_width = lego_colors.length * brick_pixel_width
-blueprint_height = lego_colors.first.length * brick_pixel_height
-blueprint = ChunkyPNG::Image.new(blueprint_width, blueprint_height, ChunkyPNG::Color::BLACK)
-
-blueprint_width.times do |x|
-  blueprint_height.times do |y|
-    color = lego_colors[x / brick_pixel_width][y / brick_pixel_height]
-    blueprint[x, y] = ChunkyPNG::Color.rgba(*color.to_a)
-  end
-end
-
-# Draw the outlines
-if DRAW_OUTLINES
-  blueprint_width.times do |x|
-    blueprint_height.times do |y|
-      next unless x % brick_pixel_width == 0 || y % brick_pixel_height == 0
-      blueprint[x, y] = ChunkyPNG::Color::WHITE
-    end
-  end
-end
-
-blueprint.save('lego.png', :interlace => true)
+# Output the blueprint.
+LegoBlueprint
+  .new(image_brick_width, image_brick_height, lego_colors)
+  .to_chunky_png(DRAW_OUTLINES)
+  .save('lego.png', interlace: true)
